@@ -1003,7 +1003,7 @@ Transform:
   m_GameObject: {fileID: 1193004352163984}
   m_LocalRotation: {x: 1, y: -0, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0.00507}
-  m_LocalScale: {x: 0.0004, y: 0.00039999964, z: 0.00039999964}
+  m_LocalScale: {x: 0.00039, y: 0.00039999964, z: 0.00039999964}
   m_Children: []
   m_Father: {fileID: 4671553840112164}
   m_RootOrder: 1
@@ -2907,16 +2907,21 @@ MonoBehaviour:
   Children:
   - {fileID: 114548719427693896}
   - {fileID: 114046191245890486}
+  - {fileID: 0}
   - {fileID: 114653066556487248}
-  - {fileID: 114343666684594066}
-  - {fileID: 114310359043209410}
-  - {fileID: 114783495084384314}
   - {fileID: 114591840668493210}
-  - {fileID: 114949793246139976}
   - {fileID: 114244981766235512}
+  - {fileID: 114343666684594066}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 114310359043209410}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 114783495084384314}
+  - {fileID: 114949793246139976}
   - {fileID: 114516707888603110}
   IsPassThrough: 0
-  ChildRowLength: 0
+  ChildRowLength: 3
   Highlight: {fileID: 114900806537611694}
   SelectableColliders: []
   DefaultSelectableIndex: 0

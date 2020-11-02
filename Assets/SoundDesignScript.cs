@@ -222,7 +222,7 @@ public class SoundDesignScript : MonoBehaviour
             }
             else if (parameters.Length == 2)
             {
-                if (!ShapeNames.Contains(parameters[1].ToLower())) yield return "sendtochaterror The specified waveform '" + parameters[1] + "' is invalid!";
+                if (!ShapeNames.Contains(parameters[1].ToLower())) { yield return "sendtochaterror The specified waveform '" + parameters[1] + "' is invalid!"; yield break; }
                 Buttons[Array.IndexOf(ShapeNames, parameters[1].ToLower()) + 2].OnInteract();
             }
             else if (parameters.Length == 1)
@@ -241,9 +241,9 @@ public class SoundDesignScript : MonoBehaviour
             }
             else if (parameters.Length == 3)
             {
-                if (!knobs.Contains(parameters[1].ToLower())) yield return "sendtochaterror The specified knob '" + parameters[1] + "' is invalid!";
-                if (!cardinals.Contains(parameters[2].ToLower())) yield return "sendtochaterror The specified direction '" + parameters[2] + "' is invalid!";
-                if (!parameters[1].ToLower().Equals("p") && parameters[2].ToLower().EqualsAny("w", "nw", "ne", "e")) yield return "sendtochaterror The specified direction '" + parameters[2] + "' is not possible to set to on this knob!";
+                if (!knobs.Contains(parameters[1].ToLower())) { yield return "sendtochaterror The specified knob '" + parameters[1] + "' is invalid!"; yield break; }
+                if (!cardinals.Contains(parameters[2].ToLower())) { yield return "sendtochaterror The specified direction '" + parameters[2] + "' is invalid!"; yield break; }
+                if (!parameters[1].ToLower().Equals("p") && parameters[2].ToLower().EqualsAny("w", "nw", "ne", "e")) { yield return "sendtochaterror The specified direction '" + parameters[2] + "' is not possible to set to on this knob!"; yield break; }
                 if (parameters[1].ToLower().Equals("p"))
                 {
                     while (Array.IndexOf(cardinals, parameters[2].ToLower()) != PitchTurns)

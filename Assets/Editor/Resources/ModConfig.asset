@@ -14,27 +14,24 @@ MonoBehaviour:
   id: soundDesign
   title: Sound Design
   author: Aero, Katarina, eXish
-  description: 'Sound Design v1.0.4
+  description: 'This is a reupload of a module, unsubscribe from the old version here:
+    https://steamcommunity.com/sharedfiles/filedetails/?id=2140188591
 
-
-    This is a reupload of a module, unsubscribe from the old version here: https://steamcommunity.com/sharedfiles/filedetails/?id=2140188591
-
-
-    Idea and implementation by Aero
-
-    Coding and beta testing by Katarina
-
-    Maintained by eXish
-
-
-    Module ID: soundDesign
-
-    PDF: https://ktane.timwi.de/PDF/Sound%20Design.pdf
 
     HTML: https://ktane.timwi.de/HTML/Sound%20Design.html
 
+    PDF: https://ktane.timwi.de/PDF/Sound%20Design.pdf
 
-    If any bugs are found, contact me on discord at eXish#9815'
-  version: 1.0.4
+
+    Sound Design (soundDesign) v1.0.5
+
+    Idea and Implementation by Aero
+
+    Coding and Beta Testing by Katarina
+
+    Maintained by eXish
+
+    Twitch Plays supported'
+  version: 1.0.5
   outputFolder: build
   previewImage: {fileID: 2800000, guid: fc5b5244f73ab7747b1820e9eecdbefe, type: 3}

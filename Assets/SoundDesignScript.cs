@@ -55,12 +55,6 @@ public class SoundDesignScript : MonoBehaviour
         SelectClip();
         Solving();
 	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
 
     void PressedButton(KMSelectable Button)
     {
@@ -89,8 +83,33 @@ public class SoundDesignScript : MonoBehaviour
                 moduleSolved = true;
                 Debug.LogFormat("[Sound Design #{0}] Correct! Module defused!", moduleId);
                 break;
-            case 1: ExampleClip.Play(); break;
+            case 1:
+                ExampleClip.clip = ClipArray[ClipNumber];
+                ExampleClip.pitch = PitchValues[PitchNumber];
+                ExampleClip.Play();
+                break;
             case 2:
+                if (ShapePress == -1)
+                {
+                    break;
+                }
+                string clipName = ShapeNames[ShapePress - 3][0].ToString().ToUpper() + ShapeNames[ShapePress - 3].Substring(1) + " C att" + new int[] { 0, 1, 5 }[AttackTurns] + " rel" + new int[] { 0, 1, 5 }[ReleaseTurns];
+                if (clipName.StartsWith("Square"))
+                    clipName += " PW" + (PulseTurns % 3);
+                int index = -1;
+                for (int i = 0; i < ClipArray.Length; i++)
+                {
+                    if (ClipArray[i].name == clipName)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                ExampleClip.clip = ClipArray[index];
+                ExampleClip.pitch = PitchValues[PitchTurns];
+                ExampleClip.Play();
+                break;
+            case 3:
                 if (ShapePress != -1)
                 {
                     Buttons[ShapePress].transform.localPosition = new Vector3(0.011f, 9.646f, z);
@@ -99,8 +118,7 @@ public class SoundDesignScript : MonoBehaviour
                 ShapePress = Index;
                 z = Button.transform.localPosition.z;
                 break;
-
-            case 3:
+            case 4:
                 if (ShapePress != -1)
                 {
                     Buttons[ShapePress].transform.localPosition = new Vector3(0.011f, 9.646f, z);
@@ -109,7 +127,7 @@ public class SoundDesignScript : MonoBehaviour
                 ShapePress = Index;
                 z = Button.transform.localPosition.z;
                 break;
-            case 4:
+            case 5:
                 if (ShapePress != -1)
                 {
                     Buttons[ShapePress].transform.localPosition = new Vector3(0.011f, 9.646f, z);
@@ -118,7 +136,7 @@ public class SoundDesignScript : MonoBehaviour
                 ShapePress = Index;
                 z = Button.transform.localPosition.z;
                 break;
-            case 5:
+            case 6:
                 if (ShapePress != -1)
                 {
                     Buttons[ShapePress].transform.localPosition = new Vector3(0.011f, 9.646f, z);
@@ -127,7 +145,7 @@ public class SoundDesignScript : MonoBehaviour
                 ShapePress = Index;
                 z = Button.transform.localPosition.z;
                 break;
-            case 6:
+            case 7:
                 Button.transform.Rotate(Vector3.up, (315/7f));
                 PitchTurns++;
                 if (PitchTurns > 6)
@@ -136,7 +154,7 @@ public class SoundDesignScript : MonoBehaviour
                     PitchTurns = 0; return;
                 }
                 break;
-            case 7:
+            case 8:
                 Button.transform.Rotate(Vector3.up, (270 / 2f));
                 PulseTurns++;
                 if (PulseTurns > 2)
@@ -145,7 +163,7 @@ public class SoundDesignScript : MonoBehaviour
                     PulseTurns = 0; return;
                 }
                 break;
-            case 8:
+            case 9:
                 Button.transform.Rotate(Vector3.up, (270 / 2f));
                 AttackTurns++;
                 if (AttackTurns > 2)
@@ -170,8 +188,6 @@ public class SoundDesignScript : MonoBehaviour
     {
         ClipNumber = RND.Range(0, ClipArray.Length);
         PitchNumber = RND.Range(0, 7);
-        ExampleClip.clip = ClipArray[ClipNumber];
-        ExampleClip.pitch = PitchValues[PitchNumber];
     }
 
     void Solving()
@@ -181,7 +197,7 @@ public class SoundDesignScript : MonoBehaviour
         Attack = int.Parse(ClipName[2][3].ToString());
         Release = int.Parse(ClipName[3][3].ToString());
         PulseWidth = ShapeName == "square" ? int.Parse(ClipName[4][2].ToString()) : 3;
-        Debug.LogFormat("[Sound Design #{0}] The generated attributes in format of shape name, attack, release, pitch, and pulse width: {1}, {2}, {3}, {4}, and {5}.", moduleId, ShapeName, Attack, Release, "CDEFGAB"[PitchNumber],PulseWidth == 3 ? 0 : PulseWidth);
+        Debug.LogFormat("[Sound Design #{0}] The generated attributes in format of shape name, attack, release, pitch, and pulse width: {1}, {2}, {3}, {4}, and {5}.", moduleId, ShapeName[0].ToString().ToUpper() + ShapeName.Substring(1), Attack, Release, "CDEFGAB"[PitchNumber], PulseWidth == 3 ? 0 : PulseWidth);
     }
 
     bool[] CheckAnswer()
@@ -191,14 +207,14 @@ public class SoundDesignScript : MonoBehaviour
         bool TrueRelease = Array.IndexOf(new int[] { 0, 1, 5 }, Release) == ReleaseTurns;
         bool TrueShape = false;
         if (ShapePress != -1)
-            TrueShape = ShapeNames[ShapePress - 2] == ShapeName;
+            TrueShape = ShapeNames[ShapePress - 3] == ShapeName;
         bool TruePW = PulseWidth == 3 ? true : PulseTurns == PulseWidth;
         return new bool[] { TruePitch, TrueAttack, TrueRelease, TruePW, TrueShape };
     }
 
     //twitch plays
     #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} play [Presses the play button] | !{0} submit [Presses the submit button] | !{0} wave <waveform> [Presses the button of the specified waveform] | !{0} set <knob> <dir> [Sets the specified knob in the specified direction] | Valid waveforms are Sine, Tri, Saw, and Square | Valid knobs are P, A, PW, or R | Valid directions are any abbreviated cardinal direction";
+    private readonly string TwitchHelpMessage = @"!{0} play [Presses the play button] | !{0} preview [Presses the preview button] | !{0} submit [Presses the submit button] | !{0} wave <waveform> [Presses the button of the specified waveform] | !{0} set <knob> <dir> [Sets the specified knob in the specified direction] | Valid waveforms are Sine, Tri, Saw, and Square | Valid knobs are P, A, PW, or R | Valid directions are any abbreviated cardinal direction";
     #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
     {
@@ -206,6 +222,11 @@ public class SoundDesignScript : MonoBehaviour
         {
             yield return null;
             Buttons[1].OnInteract();
+        }
+        if (Regex.IsMatch(command, @"^\s*preview\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            Buttons[2].OnInteract();
         }
         if (Regex.IsMatch(command, @"^\s*submit\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
@@ -222,8 +243,8 @@ public class SoundDesignScript : MonoBehaviour
             }
             else if (parameters.Length == 2)
             {
-                if (!ShapeNames.Contains(parameters[1].ToLower())) { yield return "sendtochaterror The specified waveform '" + parameters[1] + "' is invalid!"; yield break; }
-                Buttons[Array.IndexOf(ShapeNames, parameters[1].ToLower()) + 2].OnInteract();
+                if (!ShapeNames.Contains(parameters[1].ToLower())) { yield return "sendtochaterror!f The specified waveform '" + parameters[1] + "' is invalid!"; yield break; }
+                Buttons[Array.IndexOf(ShapeNames, parameters[1].ToLower()) + 3].OnInteract();
             }
             else if (parameters.Length == 1)
             {
@@ -241,14 +262,14 @@ public class SoundDesignScript : MonoBehaviour
             }
             else if (parameters.Length == 3)
             {
-                if (!knobs.Contains(parameters[1].ToLower())) { yield return "sendtochaterror The specified knob '" + parameters[1] + "' is invalid!"; yield break; }
-                if (!cardinals.Contains(parameters[2].ToLower())) { yield return "sendtochaterror The specified direction '" + parameters[2] + "' is invalid!"; yield break; }
+                if (!knobs.Contains(parameters[1].ToLower())) { yield return "sendtochaterror!f The specified knob '" + parameters[1] + "' is invalid!"; yield break; }
+                if (!cardinals.Contains(parameters[2].ToLower())) { yield return "sendtochaterror!f The specified direction '" + parameters[2] + "' is invalid!"; yield break; }
                 if (!parameters[1].ToLower().Equals("p") && parameters[2].ToLower().EqualsAny("w", "nw", "ne", "e")) { yield return "sendtochaterror The specified direction '" + parameters[2] + "' is not possible to set to on this knob!"; yield break; }
                 if (parameters[1].ToLower().Equals("p"))
                 {
                     while (Array.IndexOf(cardinals, parameters[2].ToLower()) != PitchTurns)
                     {
-                        Buttons[6].OnInteract();
+                        Buttons[7].OnInteract();
                         yield return new WaitForSeconds(0.1f);
                     }
                 }
@@ -258,7 +279,7 @@ public class SoundDesignScript : MonoBehaviour
                     int[] counts = new int[] { PulseTurns, AttackTurns, ReleaseTurns };
                     while (Array.IndexOf(abbrev, parameters[2].ToLower()) != counts[Array.IndexOf(knobs, parameters[1].ToLower()) - 1])
                     {
-                        Buttons[Array.IndexOf(knobs, parameters[1].ToLower()) + 6].OnInteract();
+                        Buttons[Array.IndexOf(knobs, parameters[1].ToLower()) + 7].OnInteract();
                         yield return new WaitForSeconds(0.1f);
                         counts = new int[] { PulseTurns, AttackTurns, ReleaseTurns };
                     }
@@ -269,7 +290,7 @@ public class SoundDesignScript : MonoBehaviour
                 if (knobs.Contains(parameters[1].ToLower()))
                     yield return "sendtochaterror Please specify the direction to set this knob to!";
                 else
-                    yield return "sendtochaterror The specified knob '" + parameters[1] + "' is invalid!";
+                    yield return "sendtochaterror!f The specified knob '" + parameters[1] + "' is invalid!";
             }
             else if (parameters.Length == 1)
             {
@@ -284,12 +305,12 @@ public class SoundDesignScript : MonoBehaviour
         int[] indexes = new int[] { 0, 3, 6 };
         if (ShapePress == -1)
         {
-            Buttons[Array.IndexOf(ShapeNames, ShapeName) + 2].OnInteract();
+            Buttons[Array.IndexOf(ShapeNames, ShapeName) + 3].OnInteract();
             yield return new WaitForSeconds(0.1f);
         }
-        else if (ShapeNames[ShapePress - 2] != ShapeName)
+        else if (ShapeNames[ShapePress - 3] != ShapeName)
         {
-            Buttons[Array.IndexOf(ShapeNames, ShapeName) + 2].OnInteract();
+            Buttons[Array.IndexOf(ShapeNames, ShapeName) + 3].OnInteract();
             yield return new WaitForSeconds(0.1f);
         }
         yield return ProcessTwitchCommand("set p " + cardinals[PitchNumber]);

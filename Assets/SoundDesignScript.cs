@@ -13,6 +13,7 @@ public class SoundDesignScript : MonoBehaviour
     public KMSelectable[] Buttons;
     public AudioSource ExampleClip;
     public AudioClip[] ClipArray;
+    public GameObject VolDot;
 
     //Logging
     static int moduleIdCounter = 1;
@@ -31,11 +32,15 @@ public class SoundDesignScript : MonoBehaviour
     private int Attack;
     private int Release;
     private int PulseWidth;
+    private int VolInd = 5;
     private float z = 0f;
     private float[] PitchValues = new float[]
-
     {
         1f, 1.125f, 1.269f, 1.325f, 1.5f, 1.68f, 1.875f
+    };
+    private float[] VolValues = new float[]
+    {
+        0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1f
     };
 
     void Awake()
@@ -60,7 +65,7 @@ public class SoundDesignScript : MonoBehaviour
     {
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Button.transform);
         int Index = Array.IndexOf(Buttons, Button);
-        if (Index.InRange(0, 5))
+        if (Index.InRange(0, 6))
         {
             Button.AddInteractionPunch();
         }
@@ -172,7 +177,7 @@ public class SoundDesignScript : MonoBehaviour
                     AttackTurns = 0; return;
                 }
                 break;
-            default:
+            case 10:
                 Button.transform.Rotate(Vector3.up, (270 / 2f));
                 ReleaseTurns++;
                 if (ReleaseTurns > 2)
@@ -180,6 +185,18 @@ public class SoundDesignScript : MonoBehaviour
                     Button.transform.localRotation = Quaternion.Euler(0f, 45f, 0f);
                     ReleaseTurns = 0; return;
                 }
+                break;
+            case 11:
+                if (VolInd == 0) return;
+                else VolInd--;
+                ExampleClip.volume = VolValues[VolInd];
+                VolDot.transform.localPosition = new Vector3(VolDot.transform.localPosition.x - 0.0115f, VolDot.transform.localPosition.y, VolDot.transform.localPosition.z);
+                break;
+            default:
+                if (VolInd == 10) return;
+                else VolInd++;
+                ExampleClip.volume = VolValues[VolInd];
+                VolDot.transform.localPosition = new Vector3(VolDot.transform.localPosition.x + 0.0115f, VolDot.transform.localPosition.y, VolDot.transform.localPosition.z);
                 break;
         } 
     }

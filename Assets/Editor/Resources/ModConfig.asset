@@ -23,7 +23,7 @@ MonoBehaviour:
     PDF: https://ktane.timwi.de/PDF/Sound%20Design.pdf
 
 
-    Sound Design (soundDesign) v1.0.7
+    Sound Design (soundDesign) v1.0.8
 
     Idea and Implementation by Aero
 
@@ -32,6 +32,6 @@ MonoBehaviour:
     Maintained by eXish
 
     Twitch Plays supported'
-  version: 1.0.7
+  version: 1.0.8
   outputFolder: build
   previewImage: {fileID: 2800000, guid: fc5b5244f73ab7747b1820e9eecdbefe, type: 3}

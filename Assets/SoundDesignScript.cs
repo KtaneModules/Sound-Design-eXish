@@ -231,7 +231,7 @@ public class SoundDesignScript : MonoBehaviour
 
     //twitch plays
     #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} play [Presses the play button] | !{0} preview [Presses the preview button] | !{0} submit [Presses the submit button] | !{0} wave <waveform> [Presses the button of the specified waveform] | !{0} set <knob> <dir> [Sets the specified knob in the specified direction] | Valid waveforms are Sine, Tri, Saw, and Square | Valid knobs are P, A, PW, or R | Valid directions are any abbreviated cardinal direction";
+    private readonly string TwitchHelpMessage = @"!{0} play [Presses the play button] | !{0} preview [Presses the preview button] | !{0} submit [Presses the submit button] | !{0} wave <waveform> [Presses the button of the specified waveform] | !{0} set <knob> <dir> [Sets the specified knob in the specified direction] | !{0} volume/vol <%> [Sets the volume to the specified percentage] | Valid waveforms are Sine, Tri, Saw, and Square | Valid knobs are P, A, PW, or R | Valid directions are any abbreviated cardinal direction";
     #pragma warning restore 414
     IEnumerator ProcessTwitchCommand(string command)
     {
@@ -312,6 +312,41 @@ public class SoundDesignScript : MonoBehaviour
             else if (parameters.Length == 1)
             {
                 yield return "sendtochaterror Please specify a knob and direction to set!";
+            }
+        }
+        if (Regex.IsMatch(parameters[0], @"^\s*volume\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) || Regex.IsMatch(parameters[0], @"^\s*vol\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            string[] percents = new string[] { "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
+            if (parameters.Length > 2)
+            {
+                yield return "sendtochaterror Too many parameters!";
+            }
+            else if (parameters.Length == 2)
+            {
+                if (!percents.Contains(parameters[1])) { yield return "sendtochaterror!f The specified percentage '" + parameters[1] + "' is invalid!"; yield break; }
+                if (Array.IndexOf(percents, parameters[1]) > VolInd)
+                {
+                    int end = Array.IndexOf(percents, parameters[1]) - VolInd;
+                    for (int i = 0; i < end; i++)
+                    {
+                        Buttons[12].OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                }
+                else if (Array.IndexOf(percents, parameters[1]) < VolInd)
+                {
+                    int end = VolInd - Array.IndexOf(percents, parameters[1]);
+                    for (int i = 0; i < end; i++)
+                    {
+                        Buttons[11].OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                }
+            }
+            else if (parameters.Length == 1)
+            {
+                yield return "sendtochaterror Please specify a valid percentage!";
             }
         }
     }
